@@ -1,0 +1,33 @@
+{
+    "name": "unipay/custom-crud",
+    "authors": [
+        {
+            "name": "ramazzz",
+            "email": "gio@unipay.com"
+        }
+    ],
+    "description": "laravel Backpack CustomcrudController for Crud",
+    "type": "package",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "backpack/base": "^0.8.3",
+        "backpack/crud": "^3.3",
+        "unipay/i18ncontent": "^1.0@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Unipay\\CustomCrud\\": "src"
+        }
+    },
+     "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+     "config": {
+        "sort-packages": true
+    }
+}
