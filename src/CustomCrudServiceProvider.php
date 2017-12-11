@@ -1,6 +1,6 @@
 <?php
 
-namespace Unipay\I18ncontent;
+namespace Unipay\CustomCrud;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -13,8 +13,7 @@ class CustomCrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/routes.php');
-        $this->loadViewsFrom(__DIR__.'/views','unipay');
+        $this->loadViewsFrom(__DIR__.'/views','ccrud');
     }
 
     /**
