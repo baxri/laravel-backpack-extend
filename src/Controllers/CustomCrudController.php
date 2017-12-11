@@ -23,6 +23,7 @@ class CustomCrudController extends CrudController
     public $orderDir = 'desc';
     public $disableSorts = NULL;
 
+
     public function index()
     {
         $this->crud->setListView('ccrud::list');

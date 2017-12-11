@@ -20,7 +20,13 @@ trait AjaxTable
 
             foreach ($result as $item) {
                 $exists = method_exists($item, 'toExport');
-                $data[] = $item->toArray();
+                if (!$exists) {
+                    return response()->json([
+                        'error' => 'Method toExport not exists in Model'
+                    ]);
+                } else {
+                    $data[] = $item->toArray();
+                }
             }
 
             Excel::create(str_replace("_", " ", ucfirst($table_name)), function ($excel) use ($data) {

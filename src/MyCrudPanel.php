@@ -11,6 +11,15 @@ class MyCrudPanel extends  CrudPanel
 {
     use Columns,Filters;
 
+    public function enableServerSideExport()
+    {
+        $this->addFilter([
+            'type' => 'export',
+            'name' => 'exel_export',
+            'label'=> 'Exel Export'
+        ]);
+    }
+
     private function getRelationModel($relationString)
     {
         $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
