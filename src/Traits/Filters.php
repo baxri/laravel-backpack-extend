@@ -217,7 +217,7 @@ class CrudFilter
         $this->options = $options;
 
         if($this->type == 'export'){
-            $this->view = 'ccrud::export';
+            $this->view = 'ccrud::filters.export';
         }else{
             $this->view = 'crud::filters.'.$this->type;
         }

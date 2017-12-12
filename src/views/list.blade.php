@@ -35,6 +35,15 @@
                         @include('crud::inc.filters_navbar')
                     @endif
 
+                    @if ( ($crud->ajaxTable() && method_exists($crud, "getTotals") && !empty( $crud->getTotals()) ) )
+                        <nav class="navbar navbar-default navbar-filters" style="padding-left: 15px; margin-top: 5px;" >
+                            <div id="totals-panel"></div>
+                            <div style='clear: both;'></div>
+                        </nav>
+
+                        <div style="clear: both;"></div>
+                    @endif
+
                     <table id="crudTable" class="table table-striped table-hover display">
                         <thead>
                         <tr>
@@ -141,6 +150,8 @@
                     return extended;
                 }
                     @endif
+
+
 
             var table = $("#crudTable").DataTable({
                     @if($disableSorts)
@@ -341,7 +352,33 @@ register_details_row_button_action();
 
 
         });
+
+        @if ($crud->ajaxTable())
+            $("#crudTable").on( 'draw.dt', function () {
+                var ajax_table = $("#crudTable").DataTable();
+                {{--make_request_to_get_total_info("{{ url($crud->route.'/search').'?'.Request::getQueryString() }}&request_type=total");--}}
+                make_request_to_get_total_info(ajax_table.ajax.url() + "&request_type=total");
+            } );
+        @endif
+
+        function make_request_to_get_total_info( url ){
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {},
+                success: function(data){
+                    var panel = $("#totals-panel");
+                    panel.html("");
+                    $.each( data, function( key, value ) {
+                        panel.append("<p style='color: gray; font-weight: bold; font-size: 15px; padding-top: 8px; float: left; margin-right: 10px;'>" + value.label + ": " + value.value + "</p>");
+                    });
+                }
+            });
+        }
+
     </script>
+
+
 
     <!-- CRUD LIST CONTENT - crud_list_scripts stack -->
     @stack('crud_list_scripts')

@@ -1,5 +1,5 @@
 <li
-        class="datepicker {{ $filter->name }}-class btn btn-default"
+        class="{{ $filter->name }}-class btn btn-default"
         style="background-color: seagreen; color: white;   height: 32px;line-height: 17px;margin: 0px 10px; "
         name="{{ $filter->name }}"
         id="export-button"
