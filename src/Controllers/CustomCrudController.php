@@ -26,7 +26,6 @@ class CustomCrudController extends CrudController
 
     public function index()
     {
-        $this->crud->setListView('ccrud::list');
         $this->crud->setDefaultPageLength(25);
         $this->crud->hasAccessOrFail('list');
 
