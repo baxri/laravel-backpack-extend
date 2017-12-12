@@ -36,7 +36,7 @@
                     @endif
 
                     @if ( ($crud->ajaxTable() && method_exists($crud, "getTotals") && !empty( $crud->getTotals()) ) )
-                        <nav class="navbar navbar-default navbar-filters" style="padding-left: 15px; margin-top: 5px;" >
+                        <nav class="navbar navbar-default navbar-filters" style="padding-left: 15px; margin-top: -5.5px;" >
                             <div id="totals-panel"></div>
                             <div style='clear: both;'></div>
                         </nav>
