@@ -40,17 +40,17 @@ class MyCrudPanel extends  CrudPanel
         return $this->totals;
     }
 
-    public function addCount(){
+    public function addCount($label){
         $this->addTotal([
+            'label' => $label,
             'aggregate' => 'count',
-            'label' => ucfirst($this->entity_name_plural).' count',
         ]);
     }
 
-    public function addSum( $field ){
+    public function addSum( $label,$field ){
         $this->addTotal([
+            'label' => $label,
             'aggregate' => 'sum',
-            'label' => ucfirst($field),
             'name' => $field
 //            'type' => 'model_function',
 //            'function_name' => 'getAmountTotalView',
