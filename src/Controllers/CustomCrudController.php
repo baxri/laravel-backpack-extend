@@ -22,11 +22,11 @@ class CustomCrudController extends CrudController
     public $orderBy = '1';
     public $orderDir = 'desc';
     public $disableSorts = NULL;
+    public $listview = 'ccrud::list';
 
 
     public function index()
     {
-        $this->crud->setListView('ccrud::list');
         $this->crud->setDefaultPageLength(25);
         $this->crud->hasAccessOrFail('list');
 
@@ -35,7 +35,8 @@ class CustomCrudController extends CrudController
         $this->data['orderBy'] = $this->orderBy;
         $this->data['orderDir'] = $this->orderDir;
         $this->data['disableSorts'] = $this->disableSorts;
-        return view($this->crud->getListView(), $this->data);
+
+        return view($this->listview, $this->data);
     }
 
 }
