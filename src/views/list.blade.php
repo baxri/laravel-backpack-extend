@@ -16,7 +16,7 @@
 
 @section('content')
     @if(!empty($crud->topTabsList))
-        @include('crud::inc.custom.toplist')
+        @include('ccrud::inc.custom.toplist')
     @endif
     <!-- Default box -->
     <div class="row">
