@@ -12,8 +12,8 @@
                     @foreach($element['list'] as $list)
 
                         <li role="presentation"
-                            class="<?php echo ($crud->getRoute() . "/" . $element['route'] === Request::path()) ? "active" : "" ?>">
-                            <a href="{{$list['route']}}" role="button">
+                            class="<?php echo (config('backpack.base.route_prefix') . "/" . $element['route'] === Request::path()) ? "active" : "" ?>">
+                            <a href="{{url(config('backpack.base.route_prefix') . "/" . $element['route'])}}" role="button">
                                 {{$list['label']}}
                             </a>
                         </li>
@@ -23,8 +23,8 @@
             </li>
         @else
             <li role="presentation"
-                class="<?php echo ($crud->getRoute() . "/" . $element['route'] === Request::path()) ? "active" : "" ?>">
-                <a href="{{$element['route']}}" role="button">
+                class="<?php echo (config('backpack.base.route_prefix') . "/" . $element['route'] === Request::path()) ? "active" : "" ?>">
+                <a href="{{url(config('backpack.base.route_prefix') . "/" . $element['route'])}}" role="button">
                     {{$element['label']}}
                 </a>
             </li>
