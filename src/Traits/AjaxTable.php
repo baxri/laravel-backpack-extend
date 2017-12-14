@@ -113,6 +113,7 @@ trait AjaxTable
             }
         }
 
+
         $entries = $this->crud->getEntries();
 
         return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows);

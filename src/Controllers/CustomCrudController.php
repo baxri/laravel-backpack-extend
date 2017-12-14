@@ -5,8 +5,6 @@ namespace Unipay\CustomCrud\Controllers;
 use Unipay\CustomCrud\Traits\AjaxTable;
 use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\MyCrudPanel;
-use App\Http\Requests\Request;
-use Exception;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class CustomCrudController extends CrudController
