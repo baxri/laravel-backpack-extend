@@ -4,6 +4,7 @@ namespace Unipay\CustomCrud;
 
 
 use Backpack\CRUD\CrudPanel;
+use Exception;
 use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\Traits\Filters;
 
@@ -65,6 +66,17 @@ class MyCrudPanel extends  CrudPanel
 //            'type' => 'model_function',
 //            'function_name' => 'getAmountTotalView',
         ]);
+    }
+
+    public function setTopTabs($src = null){
+
+        $tabs = include resource_path() . '\tabs\\' . $src . '.php';
+
+        if(!is_array($tabs)){
+            throw new Exception('Please add menu array');
+        }
+
+        $this->topTabsList = $tabs;
     }
 
 }
