@@ -70,7 +70,7 @@ class MyCrudPanel extends  CrudPanel
 
     public function setTopTabs($src = null){
 
-        $tabs = include resource_path() . '\tabs\\' . $src . '.php';
+        $tabs = include resource_path() . '/tabs/' . $src . '.php';
 
         if(!is_array($tabs)){
             throw new Exception('Please add menu array');
