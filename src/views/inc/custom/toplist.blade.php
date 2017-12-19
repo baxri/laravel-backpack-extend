@@ -14,10 +14,13 @@
                 <ul class="dropdown-menu">
                     @foreach($element['list'] as $list)
 
-
+                        <?php
+                        $route = explode('/', $element['route']);
+                        $path = explode('/', Request::path());
+                        ?>
 
                         <li role="presentation"
-                            class="<?php echo (config('backpack.base.route_prefix') . "/" . $element['route'] === Request::path()) ? "active" : "" ?>">
+                            class="<?php echo ( $path[count($path)-1] == $route[count($route)-1] ) ? "active" : "" ?>">
                             <a href="{{url(config('backpack.base.route_prefix') . "/" . $element['route'])}}" role="button">
                                 {{$list['label']}}
                             </a>
