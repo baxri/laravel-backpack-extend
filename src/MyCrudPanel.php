@@ -7,10 +7,11 @@ use Backpack\CRUD\CrudPanel;
 use Exception;
 use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\Traits\Filters;
+use Unipay\CustomCrud\Traits\Query;
 
 class MyCrudPanel extends  CrudPanel
 {
-    use Columns,Filters;
+    use Columns,Filters,Query;
 
     // Total information
     public $totals = [];
@@ -70,7 +71,7 @@ class MyCrudPanel extends  CrudPanel
 
     public function setTopTabs($src = null){
 
-        $tabs = include resource_path() . '\tabs\\' . $src . '.php';
+        $tabs = include resource_path() . '/tabs/' . $src . '.php';
 
         if(!is_array($tabs)){
             throw new Exception('Please add menu array');
