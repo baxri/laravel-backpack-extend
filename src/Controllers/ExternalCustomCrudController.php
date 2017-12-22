@@ -2,7 +2,6 @@
 
 namespace Unipay\CustomCrud\Controllers;
 
-use App\Gateway\SendWyre;
 use App\helpers\Number;
 use App\Http\Requests\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -26,6 +25,7 @@ class ExternalCustomCrudController extends CrudController
         $request = $this->array;
         foreach ($request as $k => $r) {
             foreach ($this->crud->getColumns() as $column) {
+
                 if($column['type'] == 'btc'){
                     $text = number_format($r[$column['name']],8);
                 }elseif($column['type'] == 'datetime'){
@@ -40,9 +40,11 @@ class ExternalCustomCrudController extends CrudController
                 ];
             }
         }
+
         if($this->items){
             return response()->json(array_merge($this->items,$response));
         }
+
         return response()->json($response);
     }
 }
