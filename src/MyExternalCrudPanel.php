@@ -9,9 +9,9 @@ use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\Traits\Filters;
 use Unipay\CustomCrud\Traits\Query;
 
-class MyCrudPanel extends  CrudPanel
+class MyExternalCrudPanel extends  CrudPanel
 {
-    use Columns,Filters;
+    use Columns,Filters,Query;
 
     // Total information
     public $totals = [];

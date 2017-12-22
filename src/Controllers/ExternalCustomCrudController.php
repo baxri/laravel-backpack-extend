@@ -7,7 +7,7 @@ use App\helpers\Number;
 use App\Http\Requests\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Illuminate\Support\Facades\Input;
-use Unipay\CustomCrud\MyCrudPanel;
+use Unipay\CustomCrud\MyExternalCrudPanel;
 
 class ExternalCustomCrudController extends CrudController
 {
@@ -17,7 +17,7 @@ class ExternalCustomCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->crud = app()->make(MyCrudPanel::class);
+        $this->crud = app()->make(MyExternalCrudPanel::class);
         $this->crud->removeAllButtons();
     }
 
