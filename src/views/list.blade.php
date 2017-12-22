@@ -18,7 +18,7 @@
     @if(!empty($crud->topTabsList))
         @include('ccrud::inc.custom.toplist')
     @endif
-    @include('ccrud::inc.grouped_errors')
+    @include('ccrud::inc.custom.grouped_errors')
     <!-- Default box -->
     <div class="row">
 
