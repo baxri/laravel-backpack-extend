@@ -37,7 +37,7 @@ trait AjaxTable
                 $excel->sheet('Sheet', function ($sheet) use ($data) {
                     $sheet->with($data);
                 });
-            })->store('xls');
+            })->store('xls',public_path('exports'));
 
             return response()->json([
                 'error' => "",
