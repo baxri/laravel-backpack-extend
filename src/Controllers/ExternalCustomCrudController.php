@@ -37,9 +37,22 @@ class ExternalCustomCrudController extends CrudController
                 if ($column['type'] == 'btc') {
                     $text = number_format($r[$column['name']], 8);
                 } elseif ($column['type'] == 'datetime') {
-                    $length = $column['typelength'];
-                    $datetime = substr($r[$column['name']], 0, $length);
-                    $text = date("Y-M-d H:i:s", (int)$datetime);
+                    $text = date("Y-M-d H:i:s", strtotime($r[$column['name']]));
+                    if(isset($column['timezone'])){
+                        $text = date("Y-M-d H:i:s", strtotime($r[$column['name']]) + ($column['timezone'] * 3600));
+                    }
+                }elseif ($column['type'] == 'bitstamp_transactions_type') {
+                    if($r[$column['name']] == 0){
+                        $text = 'deposit';
+                    }elseif($r[$column['name']] == 1){
+                        $text = 'withdrawal';
+                    }elseif($r[$column['name']] == 2){
+                        $text = 'market trade';
+                    }elseif($r[$column['name']] == 14){
+                        $text = 'sub account transfer';
+                    }else{
+                        $text = 'undefined';
+                    }
                 } else {
                     $text = $r[$column['name']];
                 }
