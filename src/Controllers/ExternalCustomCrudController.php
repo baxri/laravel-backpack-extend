@@ -38,7 +38,7 @@ class ExternalCustomCrudController extends CrudController
                     $text = number_format($r[$column['name']], 8);
                 } elseif ($column['type'] == 'datetime') {
                     $text = date("Y-M-d H:i:s", strtotime($r[$column['name']]));
-                    if(isset($column['timezone'])){
+                    if(isset($column['timezone']) && isset($r[$column['name']])){
                         $text = date("Y-M-d H:i:s", strtotime($r[$column['name']]) + ($column['timezone'] * 3600));
                     }
                 }elseif ($column['type'] == 'bitstamp_transactions_type') {
