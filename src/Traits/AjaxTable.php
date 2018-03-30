@@ -11,6 +11,8 @@ trait AjaxTable
     {
         $request_type = isset($_GET['request_type']) ? $_GET['request_type'] : 'list';
 
+
+
         if ($request_type == 'excel') {
 
             $table_name = $this->crud->model->getTable();
@@ -45,6 +47,7 @@ trait AjaxTable
             ]);
 
         }elseif( $request_type == 'total' ){
+
             $totals = $this->crud->getTotals();
             $table_name = $this->crud->model->getTable();
 
@@ -58,6 +61,8 @@ trait AjaxTable
                 }else{
                     $value = $this->crud->totalQuery->count();
                 }
+
+
 
                 if( isset($total['type']) && isset($total['function_name']) && $total['type'] == 'model_function' ){
                     $function = $total['function_name'];
