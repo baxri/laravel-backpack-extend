@@ -39,11 +39,11 @@ trait AjaxTable
                 $excel->sheet('Sheet', function ($sheet) use ($data) {
                     $sheet->with($data);
                 });
-            })->store('xls',public_path('exports'));
+            })->store('xlsx',public_path('exports'));
 
             return response()->json([
                 'error' => "",
-                'download' => url('/exports') . '/' . $filename . '.xls',
+                'download' => url('/exports') . '/' . $filename . '.xlsx',
             ]);
 
         }elseif( $request_type == 'total' ){
@@ -69,11 +69,9 @@ trait AjaxTable
                     $value = $this->crud->model->$function($value);
                     $totals[$key]['value'] = $value;
                 }else{
-                    if($total['aggregate'] == 'sum' ){
-                        $totals[$key]['value'] = number_format($value,2);
-                    }else{
-                        $totals[$key]['value'] = $value;
-                    }
+                        echo "<pre>";
+                        print_r($totals);
+                        echo "</pre>";
 
                 }
         }
