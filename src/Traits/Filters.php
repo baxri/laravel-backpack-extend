@@ -65,6 +65,9 @@ trait Filters
         $this->filters->push($filter);
 
         // if a closure was passed as "filter_logic"
+
+
+
         if ($this->doingListOperation()) {
             if ($this->request->has($options['name'])) {
                 if (is_callable($filter_logic)) {
@@ -153,9 +156,17 @@ trait Filters
      */
     public function doingListOperation()
     {
+        $proxy_schema = getenv('PROXY_SCHEMA');
         $route = $this->route;
 
-        switch ($this->request->url()) {
+        $url = $this->request->url();
+        $url = str_replace(':80', '', $url);
+
+        if($proxy_schema == 'https'){
+            $url = str_replace('http', 'https', $url);
+        }
+
+        switch ($url) {
             case url($this->route):
                 if ($this->request->getMethod() == 'POST' ||
                     $this->request->getMethod() == 'PATCH') {
