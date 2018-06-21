@@ -156,14 +156,14 @@ trait Filters
      */
     public function doingListOperation()
     {
-        $proxy_schema = getenv('PROXY_SCHEMA');
+       
         $route = $this->route;
 
         $url = $this->request->url();
         $url = str_replace(':80', '', $url);
 
-        if($proxy_schema == 'https'){
-            $url = str_replace('http', 'https', $url);
+        if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+            $url = str_replace('http', $_SERVER['HTTP_X_FORWARDED_PROTO'], $url);
         }
 
         switch ($url) {
