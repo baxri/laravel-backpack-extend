@@ -64,8 +64,10 @@ trait Filters
         $filter = new CrudFilter($options, $values, $filter_logic);
         $this->filters->push($filter);
 
-
         // if a closure was passed as "filter_logic"
+
+
+
         if ($this->doingListOperation()) {
             if ($this->request->has($options['name'])) {
                 if (is_callable($filter_logic)) {
@@ -82,15 +84,11 @@ trait Filters
                 }
             }
         }
-
-
     }
 
     public function addDefaultFilterLogic($name, $operator)
     {
         $input = \Request::all();
-
-
 
         // if this filter is active (the URL has it as a GET parameter)
         switch ($operator) {
@@ -159,13 +157,11 @@ trait Filters
     public function doingListOperation()
     {
         return true;
-        $proxy_url    = getenv('PROXY_URL');
-        $route = $this->route;
 
-       $url = $this->request->url();
+        $url = $this->request->url();
 
-        if (!empty($proxy_url)) {
-            $url = $proxy_url;
+        if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
+            $url = str_replace('http', $_SERVER['HTTP_X_FORWARDED_PROTO'], $url);
         }
 
         switch ($url) {

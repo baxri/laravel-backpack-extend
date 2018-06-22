@@ -53,6 +53,14 @@ class ExternalCustomCrudController extends CrudController
                     }else{
                         $text = 'undefined';
                     }
+                }elseif ($column['type'] == 'bitstamp_order_type') {
+                    if($r[$column['name']] == 0){
+                        $text = 'buy';
+                    }elseif($r[$column['name']] == 1){
+                        $text = 'sell';
+                    }else{
+                        $text = 'undefined';
+                    }
                 } else {
                     $text = $r[$column['name']];
                 }
