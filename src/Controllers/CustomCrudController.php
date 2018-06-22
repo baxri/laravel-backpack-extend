@@ -4,6 +4,7 @@ namespace Unipay\CustomCrud\Controllers;
 
 use App\Http\Requests\Request;
 use App\Order;
+use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Unipay\CustomCrud\Traits\AjaxTable;
 use Unipay\CustomCrud\Traits\Columns;
@@ -43,8 +44,8 @@ class CustomCrudController extends CrudController
     public function export(Request $request)
     {
         $table_name = $this->crud->model->getTable();
-
-        $filename = $table_name.'.csv';
+        $date = str_replace(" ", "-", Carbon::NOW());
+        $filename = $table_name.'-'.$date.'.csv';
 
         $this->setHeader = false;
 
