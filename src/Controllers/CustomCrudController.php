@@ -46,6 +46,8 @@ class CustomCrudController extends CrudController
 
         $filename = $table_name.'.csv';
 
+        $this->setHeader = false;
+
         $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
 
@@ -54,6 +56,18 @@ class CustomCrudController extends CrudController
             $result = $this->crud->query->getQuery()->orderBy('id');
             $result->chunk(500, function ($users) use ($handle) {
                 foreach ($users as $user) {
+
+                    if(!$this->setHeader){
+                        $headers = [];
+
+                        foreach ( (array) $user as $key => $value ){
+                            $headers[] = $key;
+                        }
+
+                        fputcsv($handle, $headers);
+                        $this->setHeader = true;
+                    }
+
                     fputcsv($handle, (array)$user);
                 }
             });
