@@ -48,6 +48,9 @@ class CustomCrudController extends CrudController
 
         $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
+
+            fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
             $result = $this->crud->query->getQuery()->orderBy('id');
             $result->chunk(500, function ($users) use ($handle) {
                 foreach ($users as $user) {
