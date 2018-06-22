@@ -2,6 +2,9 @@
 
 namespace Unipay\CustomCrud\Controllers;
 
+use App\Http\Requests\Request;
+use App\Order;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Unipay\CustomCrud\Traits\AjaxTable;
 use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\MyCrudPanel;
@@ -9,7 +12,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class CustomCrudController extends CrudController
 {
-    use AjaxTable,Columns;
+    use AjaxTable, Columns;
 
     public function __construct()
     {
@@ -35,6 +38,28 @@ class CustomCrudController extends CrudController
         $this->data['disableSorts'] = $this->disableSorts;
 
         return view($this->listview, $this->data);
+    }
+
+    public function export(Request $request)
+    {
+        $table_name = $this->crud->model->getTable();
+
+        $filename = $table_name.'.csv';
+
+        $response = new StreamedResponse(function () {
+            $handle = fopen('php://output', 'w');
+            $result = $this->crud->query->getQuery()->orderBy('id');
+            $result->chunk(500, function ($users) use ($handle) {
+                foreach ($users as $user) {
+                    fputcsv($handle, (array)$user);
+                }
+            });
+            fclose($handle);
+        }, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename='.$filename,
+        ]);
+        return $response;
     }
 
 }

@@ -16,12 +16,13 @@ class MyCrudPanel extends  CrudPanel
     // Total information
     public $totals = [];
 
-    public function enableServerSideExport()
+    public function enableServerSideExport($entity = '')
     {
         $this->addFilter([
             'type' => 'export',
             'name' => 'exel_export',
-            'label'=> 'Exel Export'
+            'label'=> 'Exel Export',
+            'entity' => $entity,
         ]);
     }
 

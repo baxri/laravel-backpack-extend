@@ -3,7 +3,9 @@
 namespace Unipay\CustomCrud\Traits;
 
 use App\Backpack\DataTable;
+
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 trait AjaxTable
 {
@@ -11,40 +13,60 @@ trait AjaxTable
     {
         $request_type = isset($_GET['request_type']) ? $_GET['request_type'] : 'list';
 
-
-
         if ($request_type == 'excel') {
-
-            $table_name = $this->crud->model->getTable();
-            $filename = str_replace("_", " ", ucfirst($table_name));
-            $result = $this->crud->query->get();
-
-            $data = array();
-
-            foreach ($result as $item) {
-                $exists = method_exists($item, 'toExport');
-                if (!$exists) {
-
-                    $data[] = $item->toArray();
-
-//                    return response()->json([
-//                        'error' => 'Method toExport not exists in Model'
-//                    ]);
-                } else {
-                    $data[] = $item->toExport();
-                }
-            }
-
-            Excel::create(str_replace("_", " ", ucfirst($table_name)), function ($excel) use ($data) {
-                $excel->sheet('Sheet', function ($sheet) use ($data) {
-                    $sheet->with($data);
-                });
-            })->store('xls',public_path('exports'));
-
-            return response()->json([
-                'error' => "",
-                'download' => url('/exports') . '/' . $filename . '.xls',
-            ]);
+            exit("Method not exists");
+//
+//            $response = new StreamedResponse(function(){
+//                // Open output stream
+//                $handle = fopen('php://output', 'w');
+//
+//                \App\Order::chunk(500, function($users) use($handle) {
+//                    foreach ($users as $user) {
+//                        fputcsv($handle, $user->toArray());
+//                    }
+//                });
+//
+//                // Close the output stream
+//                fclose($handle);
+//            }, 200, [
+//                'Content-Type' => 'text/csv',
+//                'Content-Disposition' => 'attachment; filename="export.csv"',
+//            ]);
+//
+//            return $response;
+//            exit("OK");
+//
+//
+//            $table_name = $this->crud->model->getTable();
+//            $filename = str_replace("_", " ", ucfirst($table_name));
+//            $result = $this->crud->query->get();
+//
+//            $data = array();
+//
+//            foreach ($result as $item) {
+//                $exists = method_exists($item, 'toExport');
+//                if (!$exists) {
+//
+//                    $data[] = $item->toArray();
+//
+////                    return response()->json([
+////                        'error' => 'Method toExport not exists in Model'
+////                    ]);
+//                } else {
+//                    $data[] = $item->toExport();
+//                }
+//            }
+//
+//            Excel::create(str_replace("_", " ", ucfirst($table_name)), function ($excel) use ($data) {
+//                $excel->sheet('Sheet', function ($sheet) use ($data) {
+//                    $sheet->with($data);
+//                });
+//            })->store('xlsx',public_path('exports'));
+//
+//            return response()->json([
+//                'error' => "",
+//                'download' => url('/exports') . '/' . $filename . '.xlsx',
+//            ]);
 
         }elseif( $request_type == 'total' ){
 
@@ -69,18 +91,16 @@ trait AjaxTable
                     $value = $this->crud->model->$function($value);
                     $totals[$key]['value'] = $value;
                 }else{
-                    if($total['aggregate'] == 'sum' ){
-                        $totals[$key]['value'] = number_format($value,2);
-                    }else{
-                        $totals[$key]['value'] = $value;
-                    }
+                    echo "<pre>";
+                    print_r($totals);
+                    echo "</pre>";
 
                 }
+            }
+
+            return response()->json($totals);
+
         }
-
-        return response()->json($totals);
-
-    }
 
         $this->crud->hasAccessOrFail('list');
 
