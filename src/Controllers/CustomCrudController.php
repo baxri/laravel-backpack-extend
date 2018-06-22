@@ -54,7 +54,7 @@ class CustomCrudController extends CrudController
 
             fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-            $result = $this->crud->query->getQuery()->orderBy('id');
+            $result = $this->crud->query->getQuery()->orderBy('id', 'desc');
             $result->chunk(500, function ($users) use ($handle) {
                 foreach ($users as $user) {
 
