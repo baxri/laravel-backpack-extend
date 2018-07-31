@@ -26,7 +26,7 @@ class MyCrudPanel extends  CrudPanel
         ]);
     }
 
-    private function getRelationModel($relationString)
+    public function getRelationModel($relationString, $length = null, $model = null)
     {
         $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
             return $obj->$method()->getRelated();
