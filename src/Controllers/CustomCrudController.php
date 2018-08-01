@@ -12,16 +12,36 @@ use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\Traits\Buttons;
 use Unipay\CustomCrud\MyCrudPanel;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Backpack\CRUD\app\Http\Controllers\Operations\Create;
+use Backpack\CRUD\app\Http\Controllers\Operations\Delete;
+use Backpack\CRUD\app\Http\Controllers\Operations\Update;
+use Backpack\CRUD\app\Http\Controllers\Operations\Reorder;
+use Backpack\CRUD\app\Http\Controllers\Operations\Revisions;
+use Backpack\CRUD\app\Http\Controllers\Operations\SaveActions;
+use Backpack\CRUD\app\Http\Controllers\Operations\Show;
 
 class CustomCrudController extends CrudController
 {
-    use AjaxTable, Columns, Buttons;
+    use DispatchesJobs, ValidatesRequests;
+    use Create, Delete, Reorder, Revisions, SaveActions, Show, Update;
+
+    public $data = [];
+    public $request;
+    public $orderBy = '1';
+    public $orderDir = 'desc';
+    public $disableSorts = NULL;
+    public $listview = 'ccrud::list';
+    /**
+     * @var CrudPanel
+     */
+    public $crud;
 
     public function __construct()
     {
         if (! $this->crud) {
-//            $this->crud = app()->make(CrudPanel::class);
-            $this->crud = app()->make(MyCrudPanel::class);
+            $this->crud = app()->make(CrudPanel::class);
 
             // call the setup function inside this closure to also have the request there
             // this way, developers can use things stored in session (auth variables, etc)
@@ -35,73 +55,95 @@ class CustomCrudController extends CrudController
         }
     }
 
-//    public function __construct()
-//    {
-//        parent::__construct();
-//        $this->crud = app()->make(MyCrudPanel::class);
-//    }
-
-//    public $orderBy = '1';
-//    public $orderDir = 'desc';
-//    public $disableSorts = NULL;
-//    public $listview = 'ccrud::list';
-
-
-//    public function index()
-//    {
-//        $this->crud->setDefaultPageLength(25);
-//        $this->crud->hasAccessOrFail('list');
-//
-//        $this->data['crud'] = $this->crud;
-//        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
-//        $this->data['orderBy'] = $this->orderBy;
-//        $this->data['orderDir'] = $this->orderDir;
-//        $this->data['disableSorts'] = $this->disableSorts;
-//
-//        return view($this->listview, $this->data);
-//    }
-
-    public function export(Request $request)
+    /**
+     * Allow developers to set their configuration options for a CrudPanel.
+     */
+    public function setup()
     {
-        $table_name = $this->crud->model->getTable();
+    }
 
+    /**
+     * Display all rows in the database for this entity.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $this->crud->hasAccessOrFail('list');
 
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+        $this->data['orderBy'] = $this->orderBy;
+        $this->data['orderDir'] = $this->orderDir;
+        $this->data['disableSorts'] = $this->disableSorts;
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->listview, $this->data);
+    }
 
-        $date = str_replace(" ", "-", Carbon::NOW());
-        $filename = $table_name.'-'.$date.'.csv';
+    /**
+     * The search function that is called by the data table.
+     *
+     * @return  JSON Array of cells in HTML form.
+     */
+    public function search()
+    {
+        $this->crud->hasAccessOrFail('list');
 
-        $this->setHeader = false;
+        $totalRows = $filteredRows = $this->crud->count();
+        $startIndex = $this->request->input('start') ?: 0;
+        // if a search term was present
+        if ($this->request->input('search') && $this->request->input('search')['value']) {
+            // filter the results accordingly
+            $this->crud->applySearchTerm($this->request->input('search')['value']);
+            // recalculate the number of filtered rows
+            $filteredRows = $this->crud->count();
+        }
+        // start the results according to the datatables pagination
+        if ($this->request->input('start')) {
+            $this->crud->skip($this->request->input('start'));
+        }
+        // limit the number of results according to the datatables pagination
+        if ($this->request->input('length')) {
+            $this->crud->take($this->request->input('length'));
+        }
+        // overwrite any order set in the setup() method with the datatables order
+        if ($this->request->input('order')) {
+            $column_number = $this->request->input('order')[0]['column'];
+            $column_direction = $this->request->input('order')[0]['dir'];
+            $column = $this->crud->findColumnById($column_number);
+            if ($column['tableColumn']) {
+                // clear any past orderBy rules
+                $this->crud->query->getQuery()->orders = null;
+                // apply the current orderBy rules
+                $this->crud->orderBy($column['name'], $column_direction);
+            }
+        }
+        $entries = $this->crud->getEntries();
 
-        $response = new StreamedResponse(function () {
-            $handle = fopen('php://output', 'w');
-            fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            $result = $this->crud->query->getQuery()->orderBy('id', 'desc');
+        return $this->crud->getEntriesAsJsonForDatatables($entries, $totalRows, $filteredRows, $startIndex);
+    }
 
-            $result->chunk(500, function ($users) use ($handle) {
-                foreach ($users as $user) {
+    /**
+     * Used with AJAX in the list view (datatables) to show extra information about that row that didn't fit in the table.
+     * It defaults to showing some dummy text.
+     *
+     * It's enabled by:
+     * - setting: $crud->details_row = true;
+     * - adding the details route for the entity; ex: Route::get('page/{id}/details', 'PageCrudController@showDetailsRow');
+     * - adding a view with the following name to change what the row actually contains: app/resources/views/vendor/backpack/crud/details_row.blade.php
+     */
+    public function showDetailsRow($id)
+    {
+        $this->crud->hasAccessOrFail('details_row');
 
-                    if(!$this->setHeader){
-                        $headers = [];
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
 
-                        foreach ( (array) $user as $key => $value ){
-                            $headers[] = $key;
-                        }
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
 
-                        //dd($headers);
-
-                        fputcsv($handle, $headers);
-                        $this->setHeader = true;
-                    }
-
-                    fputcsv($handle, (array)$user);
-                }
-            });
-            fclose($handle);
-        }, 200, [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename='.$filename,
-        ]);
-        return $response;
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getDetailsRowView(), $this->data);
     }
 
 }
