@@ -4,6 +4,7 @@ namespace Unipay\CustomCrud\Controllers;
 
 use App\Http\Requests\Request;
 use App\Order;
+use Backpack\CRUD\CrudPanel;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Unipay\CustomCrud\Traits\AjaxTable;
@@ -17,29 +18,47 @@ class CustomCrudController extends CrudController
 
     public function __construct()
     {
-        parent::__construct();
-        $this->crud = app()->make(MyCrudPanel::class);
+        if (! $this->crud) {
+            $this->crud = app()->make(CrudPanel::class);
+            $this->crud = app()->make(MyCrudPanel::class);
+
+            // call the setup function inside this closure to also have the request there
+            // this way, developers can use things stored in session (auth variables, etc)
+            $this->middleware(function ($request, $next) {
+                $this->request = $request;
+                $this->crud->request = $request;
+                $this->setup();
+
+                return $next($request);
+            });
+        }
     }
 
-    public $orderBy = '1';
-    public $orderDir = 'desc';
-    public $disableSorts = NULL;
-    public $listview = 'ccrud::list';
+//    public function __construct()
+//    {
+//        parent::__construct();
+//        $this->crud = app()->make(MyCrudPanel::class);
+//    }
+
+//    public $orderBy = '1';
+//    public $orderDir = 'desc';
+//    public $disableSorts = NULL;
+//    public $listview = 'ccrud::list';
 
 
-    public function index()
-    {
-        $this->crud->setDefaultPageLength(25);
-        $this->crud->hasAccessOrFail('list');
-
-        $this->data['crud'] = $this->crud;
-        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
-        $this->data['orderBy'] = $this->orderBy;
-        $this->data['orderDir'] = $this->orderDir;
-        $this->data['disableSorts'] = $this->disableSorts;
-
-        return view($this->listview, $this->data);
-    }
+//    public function index()
+//    {
+//        $this->crud->setDefaultPageLength(25);
+//        $this->crud->hasAccessOrFail('list');
+//
+//        $this->data['crud'] = $this->crud;
+//        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+//        $this->data['orderBy'] = $this->orderBy;
+//        $this->data['orderDir'] = $this->orderDir;
+//        $this->data['disableSorts'] = $this->disableSorts;
+//
+//        return view($this->listview, $this->data);
+//    }
 
     public function export(Request $request)
     {
