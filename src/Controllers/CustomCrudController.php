@@ -20,7 +20,7 @@ class CustomCrudController extends CrudController
     public function __construct()
     {
         if (! $this->crud) {
-            $this->crud = app()->make(CrudPanel::class);
+//            $this->crud = app()->make(CrudPanel::class);
             $this->crud = app()->make(MyCrudPanel::class);
 
             // call the setup function inside this closure to also have the request there
@@ -64,6 +64,9 @@ class CustomCrudController extends CrudController
     public function export(Request $request)
     {
         $table_name = $this->crud->model->getTable();
+
+
+
         $date = str_replace(" ", "-", Carbon::NOW());
         $filename = $table_name.'-'.$date.'.csv';
 
@@ -71,10 +74,9 @@ class CustomCrudController extends CrudController
 
         $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
-
             fputs($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-
             $result = $this->crud->query->getQuery()->orderBy('id', 'desc');
+
             $result->chunk(500, function ($users) use ($handle) {
                 foreach ($users as $user) {
 
@@ -85,7 +87,7 @@ class CustomCrudController extends CrudController
                             $headers[] = $key;
                         }
 
-                        dd($headers);
+                        //dd($headers);
 
                         fputcsv($handle, $headers);
                         $this->setHeader = true;
