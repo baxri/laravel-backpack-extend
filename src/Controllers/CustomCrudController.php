@@ -9,12 +9,13 @@ use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Unipay\CustomCrud\Traits\AjaxTable;
 use Unipay\CustomCrud\Traits\Columns;
+use Unipay\CustomCrud\Traits\Buttons;
 use Unipay\CustomCrud\MyCrudPanel;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class CustomCrudController extends CrudController
 {
-    use AjaxTable, Columns;
+    use AjaxTable, Columns, Buttons;
 
     public function __construct()
     {

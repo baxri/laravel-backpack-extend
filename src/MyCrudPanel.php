@@ -8,10 +8,11 @@ use Exception;
 use Unipay\CustomCrud\Traits\Columns;
 use Unipay\CustomCrud\Traits\Filters;
 use Unipay\CustomCrud\Traits\Query;
+use Unipay\CustomCrud\Traits\Buttons;
 
 class MyCrudPanel extends  CrudPanel
 {
-    use Columns,Filters;
+    use Columns,Filters, Buttons;
 
     // Total information
     public $totals = [];
@@ -66,7 +67,7 @@ class MyCrudPanel extends  CrudPanel
             'aggregate' => 'sum',
             'name' => $field
 //            'type' => 'model_function',
-//            'function_name' => 'getAmountTotalView',
+//            'function_name' => 'getAmountTotalView'
         ]);
     }
 

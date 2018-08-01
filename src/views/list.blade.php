@@ -158,15 +158,15 @@
 
 
             var table = $("#crudTable").DataTable({
-                    @if($disableSorts)
-                    "aoColumnDefs": [
-                        { 'bSortable': false, 'aTargets': [ {{$disableSorts}} ] }
-                    ],
-                    @endif
-                    "order" : [{{$orderBy}},"{{$orderDir}}"],
-                    "pageLength": {{ $crud->getDefaultPageLength() }},
+                        @if($disableSorts)
+                        "aoColumnDefs": [
+                            { 'bSortable': false, 'aTargets': [ {{$disableSorts}} ] }
+                        ],
+                        @endif
+                        "order" : [{{$orderBy}},"{{$orderDir}}"],
+                    "pageLength": "{{ $crud->getDefaultPageLength() }}",
                     "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "{{ trans('backpack::crud.all') }}"]],
-                        /* Disable initial sort */
+                    /* Disable initial sort */
                     "aaSorting": [],
                     "language": {
                         "emptyTable":     "{{ trans('backpack::crud.emptyTable') }}",
@@ -232,7 +232,7 @@
             $(".dt-buttons").appendTo($('#datatable_button_stack' ));
             @endif
 
-$.ajaxPrefilter(function(options, originalOptions, xhr) {
+            $.ajaxPrefilter(function(options, originalOptions, xhr) {
                 var token = $('meta[name="csrf_token"]').attr('content');
 
                 if (token) {
@@ -248,7 +248,7 @@ $.ajaxPrefilter(function(options, originalOptions, xhr) {
                 register_delete_button_action();
 
                 @if ($crud->details_row)
-register_details_row_button_action();
+                register_details_row_button_action();
                 @endif
             } ).dataTable();
 
