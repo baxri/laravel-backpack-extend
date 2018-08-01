@@ -66,6 +66,8 @@ class CustomCrudController extends CrudController
                             $headers[] = $key;
                         }
 
+                        dd($headers);
+
                         fputcsv($handle, $headers);
                         $this->setHeader = true;
                     }
