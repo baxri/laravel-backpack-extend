@@ -17,13 +17,18 @@ class CustomCrudController extends CrudController
 {
     use AjaxTable, Columns, Buttons;
 
+    public $data = [];
+    public $request;
+    public $orderBy = '1';
+    public $orderDir = 'desc';
+    public $disableSorts = NULL;
+    public $listview = 'ccrud::list';
+
     public function __construct()
     {
         if (! $this->crud) {
 //            $this->crud = app()->make(CrudPanel::class);
             $this->crud = app()->make(MyCrudPanel::class);
-            $this->crud->setListView('ccrud::list');
-
             // call the setup function inside this closure to also have the request there
             // this way, developers can use things stored in session (auth variables, etc)
             $this->middleware(function ($request, $next) {
@@ -36,31 +41,19 @@ class CustomCrudController extends CrudController
         }
     }
 
-//    public function __construct()
-//    {
-//        parent::__construct();
-//        $this->crud = app()->make(MyCrudPanel::class);
-//    }
+    public function index()
+    {
+        $this->crud->hasAccessOrFail('list');
 
-//    public $orderBy = '1';
-//    public $orderDir = 'desc';
-//    public $disableSorts = NULL;
-//    public $listview = 'ccrud::list';
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+        $this->data['orderBy'] = $this->orderBy;
+        $this->data['orderDir'] = $this->orderDir;
+        $this->data['disableSorts'] = $this->disableSorts;
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->listview, $this->data);
+    }
 
-
-//    public function index()
-//    {
-//        $this->crud->setDefaultPageLength(25);
-//        $this->crud->hasAccessOrFail('list');
-//
-//        $this->data['crud'] = $this->crud;
-//        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
-//        $this->data['orderBy'] = $this->orderBy;
-//        $this->data['orderDir'] = $this->orderDir;
-//        $this->data['disableSorts'] = $this->disableSorts;
-//
-//        return view($this->listview, $this->data);
-//    }
 
     public function export(Request $request)
     {
