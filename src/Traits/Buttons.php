@@ -22,7 +22,7 @@ trait Buttons
      * @param bool $replaceExisting True if a button with the same name on the given stack should be replaced.
      * @return \Backpack\CRUD\PanelTraits\CrudButton The new CRUD button.
      */
-    public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true)
+    public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true, $route = null, $style = 'primary', $popup_title = null, $popup_description = null)
     {
         if ($position == false) {
             switch ($stack) {
@@ -40,7 +40,7 @@ trait Buttons
             $this->removeButton($name, $stack);
         }
 
-        $button = new CrudButton($stack, $name, $type, $content);
+        $button = new CrudButton($stack, $name, $type, $content, $route, $style, $popup_title, $popup_description);
         switch ($position) {
             case 'beginning':
                 $this->buttons->prepend($button);
@@ -54,11 +54,19 @@ trait Buttons
         return $button;
     }
 
-    public function addRouteButton($stack, $name, $view = 'route_button', $position = false){
+    public function addRouteButton($name, $route = null, $style = 'primary', $popup_title = null, $popup_description = null, $view = 'route_button', $method = 'POST'){
 
         $view = 'ccrud::inc.custom.' . $view;
 
-        $this->addButton($stack, $name, 'view', $view, $position);
+        if($popup_title == null){
+            $popup_title = $name;
+        }
+
+        if($popup_description == null){
+            $popup_description = 'Continue?';
+        }
+
+        $this->addButton('line', $name, 'route', $view, false, true, $route, $style, $popup_title, $popup_description);
     }
 
     public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
@@ -156,12 +164,20 @@ class CrudButton
     public $name;
     public $type = 'view';
     public $content;
+    public $route = null;
+    public $style = null;
+    public $popup_title = null;
+    public $popup_description = null;
 
-    public function __construct($stack, $name, $type, $content)
+    public function __construct($stack, $name, $type, $content, $route = null, $style = null, $popup_title = null, $popup_description = null)
     {
         $this->stack = $stack;
         $this->name = $name;
         $this->type = $type;
         $this->content = $content;
+        $this->route = $route;
+        $this->style = $style;
+        $this->popup_title = $popup_title;
+        $this->popup_description = $popup_description;
     }
 }

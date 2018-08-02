@@ -13,7 +13,7 @@ use Unipay\CustomCrud\Traits\Buttons;
 class MyCrudPanel extends CrudPanel
 {
 //    use Columns,Filters, Buttons;
-    use Filters;
+    use Filters, Buttons;
 
     // Total information
     public $totals = [];

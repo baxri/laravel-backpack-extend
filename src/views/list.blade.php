@@ -38,7 +38,6 @@
                     @if ($crud->filtersEnabled())
                         @include('crud::inc.filters_navbar')
                     @endif
-
                     @if ( ($crud->ajaxTable() && method_exists($crud, "getTotals") && !empty( $crud->getTotals()) ) )
                         <nav class="navbar navbar-default navbar-filters"
                              style="padding-left: 15px; margin-top: -5.5px;">
@@ -48,7 +47,6 @@
 
                         <div style="clear: both;"></div>
                     @endif
-
                     <table id="crudTable" class="table table-striped table-hover display responsive nowrap"
                            cellspacing="0">
                         <thead>
