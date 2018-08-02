@@ -10,9 +10,10 @@ use Unipay\CustomCrud\Traits\Filters;
 use Unipay\CustomCrud\Traits\Query;
 use Unipay\CustomCrud\Traits\Buttons;
 
-class MyCrudPanel extends  CrudPanel
+class MyCrudPanel extends CrudPanel
 {
-    use Columns,Filters, Buttons;
+//    use Columns,Filters, Buttons;
+    use Filters;
 
     // Total information
     public $totals = [];
@@ -22,7 +23,7 @@ class MyCrudPanel extends  CrudPanel
         $this->addFilter([
             'type' => 'export',
             'name' => 'exel_export',
-            'label'=> 'Exel Export',
+            'label' => 'Exel Export',
             'entity' => $entity,
         ]);
     }
@@ -36,17 +37,20 @@ class MyCrudPanel extends  CrudPanel
         return get_class($result);
     }
 
-    public function addTotal( $field ){
+    public function addTotal($field)
+    {
         $this->totals[] = $field;
     }
 
-    public function getTotals(){
+    public function getTotals()
+    {
         return $this->totals;
     }
 
-    public function addCount( $label = null ){
+    public function addCount($label = null)
+    {
 
-        if($label == null){
+        if ($label == null) {
             $label = ucfirst($this->entity_name_plural);
         }
 
@@ -56,9 +60,10 @@ class MyCrudPanel extends  CrudPanel
         ]);
     }
 
-    public function addSum( $field, $label = null ){
+    public function addSum($field, $label = null)
+    {
 
-        if($label == null){
+        if ($label == null) {
             $label = ucfirst($field);
         }
 
@@ -71,11 +76,12 @@ class MyCrudPanel extends  CrudPanel
         ]);
     }
 
-    public function setTopTabs($src = null){
+    public function setTopTabs($src = null)
+    {
 
         $tabs = include resource_path() . '/tabs/' . $src . '.php';
 
-        if(!is_array($tabs)){
+        if (!is_array($tabs)) {
             throw new Exception('Please add menu array');
         }
 
