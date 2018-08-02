@@ -1,9 +1,8 @@
 <!-- DATA TABLES SCRIPT -->
-
-<script src="{{asset('vendor/adminlte/plugins/datatables/jquery.dataTables.min.js')}}" type="text/javascript"></script>
-<script src="//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-<script src="//cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
-<script src="//cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.1/js/responsive.bootstrap.min.js"></script>
 
 <script>
     var crud = {
@@ -29,12 +28,6 @@
         },
         dataTableConfiguration: {
 
-            @if($disableSorts)
-            "aoColumnDefs": [
-                { 'bSortable': false, 'aTargets': [ {{$disableSorts}} ] }
-            ],
-            @endif
-            "order" : [{{$orderBy}},"{{$orderDir}}"],
             @if ($crud->getResponsiveTable())
             responsive: {
                 details: {
@@ -64,6 +57,14 @@
             responsive: false,
             scrollX: true,
             @endif
+
+
+            @if($disableSorts)
+            "aoColumnDefs": [
+                { 'bSortable': false, 'aTargets': [ {{$disableSorts}} ] }
+            ],
+            @endif
+            order : [{{$orderBy}},"{{$orderDir}}"],
             autoWidth: false,
             pageLength: {{ $crud->getDefaultPageLength() }},
             lengthMenu: @json($crud->getPageLengthMenu()),

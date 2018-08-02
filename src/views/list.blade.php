@@ -114,7 +114,7 @@
 @endsection
 
 @section('after_scripts')
-    @include('crud::inc.datatables_logic')
+    @include('ccrud::inc.datatables_logic')
 
     <script src="{{ asset('vendor/backpack/crud/js/crud.js') }}"></script>
     <script src="{{ asset('vendor/backpack/crud/js/form.js') }}"></script>
