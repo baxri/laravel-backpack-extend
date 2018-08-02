@@ -1,4 +1,4 @@
-<button id="routeButton{{$entry->getKey() . $button->name }}" type="button" class="btn btn-{{ $button->style }} btn-block" data-toggle="modal" data-target="#openModal{{$entry->getKey() . $button->name }}">
+<button id="routeButton{{$entry->getKey() . $button->name }}" type="button" class="btn btn-xs btn-{{ $button->style }}" data-toggle="modal" data-target="#openModal{{$entry->getKey() . $button->name }}">
     {{ $button->name }}
 </button>
 
@@ -7,9 +7,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{$button->popup_title}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
             </div>
             <div class="modal-body">
                 {{$button->popup_description}}
