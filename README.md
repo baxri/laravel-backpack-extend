@@ -33,6 +33,35 @@ Unipay\I18ncontent\CustomCrudServiceProvider::class
 
 # Usage
 
+## CRUD
+
+To use custom crud package you should extend you controller:
+
+```javascript
+class TestCrudController extends  CustomCrudController{
+    public function setup(){
+
+    }
+}
+```
+
+## Export
+
+```javascript
+class TestCrudController extends  CustomCrudController{
+    public function setup(){
+        
+        $this->crud->enableServerSideExport('testExport');
+
+    }
+}
+```
+
+```javascript
+Route::get('testExport', 'Admin\TestCrudController@export');
+```
+
+
 ## RouteButton
 
 Add button to action bar, with route and confirmation modal
@@ -46,7 +75,7 @@ $this->crud->addRouteButton(
     'danger', // Button type (success, danger) 
     'Modal Title', // Modal title
     'Are you sure?', // Confirmation text
-    true // tru if you want to add comment
+    true // true if you want to add comment text area
 );
 
 ```
