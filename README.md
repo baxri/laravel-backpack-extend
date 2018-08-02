@@ -37,7 +37,7 @@ Add button to action bar, with route and confirmation modal
 
 in CustomCrudController:
 
-```php
+```javascript
 $this->crud->addRouteButton(
     'Cancel', // Button title 
     route('your_route'), // Your route
