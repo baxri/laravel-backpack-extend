@@ -22,7 +22,7 @@ trait Buttons
      * @param bool $replaceExisting True if a button with the same name on the given stack should be replaced.
      * @return \Backpack\CRUD\PanelTraits\CrudButton The new CRUD button.
      */
-    public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true, $route = null, $style = 'primary', $popup_title = null, $popup_description = null)
+    public function addButton($stack, $name, $type, $content, $position = false, $replaceExisting = true, $route = null, $style = 'primary', $popup_title = null, $popup_description = null, $comment = false)
     {
         if ($position == false) {
             switch ($stack) {
@@ -40,7 +40,7 @@ trait Buttons
             $this->removeButton($name, $stack);
         }
 
-        $button = new CrudButton($stack, $name, $type, $content, $route, $style, $popup_title, $popup_description);
+        $button = new CrudButton($stack, $name, $type, $content, $route, $style, $popup_title, $popup_description, $comment);
         switch ($position) {
             case 'beginning':
                 $this->buttons->prepend($button);
@@ -54,7 +54,7 @@ trait Buttons
         return $button;
     }
 
-    public function addRouteButton($name, $route = null, $style = 'primary', $popup_title = null, $popup_description = null, $view = 'route_button', $method = 'POST'){
+    public function addRouteButton($name, $route = null, $style = 'primary', $popup_title = null, $popup_description = null, $comment = false, $view = 'route_button', $method = 'POST'){
 
         $view = 'ccrud::inc.custom.' . $view;
 
@@ -66,7 +66,7 @@ trait Buttons
             $popup_description = 'Continue?';
         }
 
-        $this->addButton('line', $name, 'route', $view, false, true, $route, $style, $popup_title, $popup_description);
+        $this->addButton('line', $name, 'route', $view, false, true, $route, $style, $popup_title, $popup_description, $comment);
     }
 
     public function addButtonFromModelFunction($stack, $name, $model_function_name, $position = false)
@@ -168,8 +168,9 @@ class CrudButton
     public $style = null;
     public $popup_title = null;
     public $popup_description = null;
+    public $comment = false;
 
-    public function __construct($stack, $name, $type, $content, $route = null, $style = null, $popup_title = null, $popup_description = null)
+    public function __construct($stack, $name, $type, $content, $route = null, $style = null, $popup_title = null, $popup_description = null, $comment = false)
     {
         $this->stack = $stack;
         $this->name = $name;
@@ -179,5 +180,6 @@ class CrudButton
         $this->style = $style;
         $this->popup_title = $popup_title;
         $this->popup_description = $popup_description;
+        $this->comment = $comment;
     }
 }
