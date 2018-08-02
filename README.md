@@ -48,17 +48,50 @@ class TestCrudController extends  CustomCrudController{
 ## Export
 
 ```javascript
-class TestCrudController extends  CustomCrudController{
-    public function setup(){
-        
+class TestCrudController extends \Unipay\CustomCrud\Controllers\CustomCrudController{
+    public function setup(){        
         $this->crud->enableServerSideExport('testExport');
-
     }
 }
 ```
 
+Add this route in web.php 
+
 ```javascript
-Route::get('testExport', 'Admin\TestCrudController@export');
+
+Route::group(['prefix' => 'console', 'middleware' => 'admin'], function(){
+
+    Route::get('testExport', 'Admin\TestCrudController@export');
+
+}
+
+
+```
+
+## Sum and count
+
+Enable count of rows under the filters
+
+```javascript
+public function setup(){        
+    $this->crud->addCount();
+}
+```
+
+Enable sum of some fields under the filters
+
+```javascript
+public function setup(){        
+    $this->crud->addSum('field_name');
+}
+```
+
+Enable sum of amount format fields like amount and commission
+
+```javascript
+public function setup(){        
+    $this->crud->addSumMoney('field_name');
+}
 ```
 
 
