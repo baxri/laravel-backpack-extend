@@ -13,7 +13,13 @@
         </ol>
     </section>
 @endsection
-
+<style>
+    div.dataTables_processing{
+        margin-left:0 !important;
+        left:5px !important;
+        width:99.5%
+    }
+</style>
 @section('content')
     <!-- Default box -->
     <div class="row">
