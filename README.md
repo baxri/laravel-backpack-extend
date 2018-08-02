@@ -38,7 +38,7 @@ Unipay\I18ncontent\CustomCrudServiceProvider::class
 To use custom crud package you should extend you controller:
 
 ```javascript
-class TestCrudController extends  CustomCrudController{
+class TestCrudController extends \Unipay\CustomCrud\Controllers\CustomCrudController{
     public function setup(){
 
     }
