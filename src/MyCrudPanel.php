@@ -13,7 +13,7 @@ use Unipay\CustomCrud\Traits\Buttons;
 class MyCrudPanel extends CrudPanel
 {
 //    use Columns,Filters, Buttons;
-    use Filters;
+    use Filters, Buttons;
 
     // Total information
     public $totals = [];
@@ -26,15 +26,6 @@ class MyCrudPanel extends CrudPanel
             'label' => 'Exel Export',
             'entity' => $entity,
         ]);
-    }
-
-    public function getRelationModel($relationString, $length = null, $model = null)
-    {
-        $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
-            return $obj->$method()->getRelated();
-        }, $this->model);
-
-        return get_class($result);
     }
 
     public function addTotal($field)
@@ -70,9 +61,24 @@ class MyCrudPanel extends CrudPanel
         $this->addTotal([
             'label' => $label,
             'aggregate' => 'sum',
-            'name' => $field
-//            'type' => 'model_function',
-//            'function_name' => 'getAmountTotalView'
+            'name' => $field,
+        ]);
+    }
+
+    public function addSumMoney($field, $label = null, $currency = 'GEL')
+    {
+        if ($label == null) {
+            $label = ucfirst($field);
+        }
+
+        $this->addTotal([
+            'label' => $label,
+            'aggregate' => 'sum',
+            'name' => $field,
+            'type' => 'model_function',
+            'function' => function($val) use($currency){
+                return number_format($val, 2, '.', '').' '.$currency;
+            }
         ]);
     }
 

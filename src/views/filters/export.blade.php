@@ -13,8 +13,7 @@
     <a href="#"
        class="btn btn-default"
        style="display: none; background-color: lightgrey; color: black;  margin: 0px 10px; height: 32px; line-height: 17px;"
-       id="export-button-download"
-    >Download</a>
+       id="export-button-download">Download</a>
 </li>
 
 @push('crud_list_scripts')

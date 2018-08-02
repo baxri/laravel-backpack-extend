@@ -14,7 +14,7 @@ This Package Requires Laravel Backpack
 "repositories" : [
       {
           "type": "vcs",
-          "url":  "http://ngitlab.unipay.com/unipay/custom-crud.git"
+          "url":  "git@ngitlab.unipay.com:unipay/custom-crud.git"
       }
 ]
 ```
@@ -30,8 +30,86 @@ composer require unipay/custom-crud
 ```php
 Unipay\I18ncontent\CustomCrudServiceProvider::class
 ```
+
+# Usage
+
+## CRUD
+
+To use custom crud package you should extend you controller:
+
+```javascript
+class TestCrudController extends  CustomCrudController{
+    public function setup(){
+
+    }
+}
+```
+
+## Export
+
+```javascript
+class TestCrudController extends \Unipay\CustomCrud\Controllers\CustomCrudController{
+    public function setup(){        
+        $this->crud->enableServerSideExport('testExport');
+    }
+}
+```
+
+Add this route in web.php 
+
+```javascript
+
+Route::group(['prefix' => 'console', 'middleware' => 'admin'], function(){
+    Route::get('testExport', 'Admin\TestCrudController@export');
+}
+
+
+```
+
+## Sum and count
+
+Enable count of rows under the filters
+
+```javascript
+public function setup(){        
+    $this->crud->addCount();
+}
+```
+
+Enable sum of some fields under the filters
+
+```javascript
+public function setup(){        
+    $this->crud->addSum('field_name');
+}
+```
+
+Enable sum of amount format fields like amount and commission
+
+```javascript
+public function setup(){        
+    $this->crud->addSumMoney('field_name');
+}
+```
+
+
+## ActionButton
+
+Add button to action bar, with route and confirmation modal
+
+in CustomCrudController:
+
+```javascript
+$this->crud->addRouteButton(
+    'Cancel', // Button title 
+    route('your_route'), // Your route
+    'danger', // Button type (success, danger) 
+    'Modal Title', // Modal title
+    'Are you sure?', // Confirmation text
+    true // true if you want to add comment text area
+);
+
+```
+
  
 
-## Credits
-
-- [George Ramazashvili](http://ramaza.info) - Author

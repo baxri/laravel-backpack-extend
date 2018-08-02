@@ -14,7 +14,6 @@ trait AjaxTable
         $request_type = isset($_GET['request_type']) ? $_GET['request_type'] : 'list';
 
 
-
         if ($request_type == 'excel') {
 
             die('OK');
@@ -83,38 +82,33 @@ trait AjaxTable
 //                'download' => url('/exports') . '/' . $filename . '.xlsx',
 //            ]);
 
-        }elseif( $request_type == 'total' ){
+        } elseif ($request_type == 'total') {
 
             $totals = $this->crud->getTotals();
             $table_name = $this->crud->model->getTable();
 
-            if( !isset($this->crud->totalQuery) ){
+            if (!isset($this->crud->totalQuery)) {
                 $this->crud->totalQuery = $this->crud->query;
             }
 
-            foreach ( $totals as $key => $total ){
-                if( isset( $total['aggregate'] ) && $total['aggregate'] == 'sum'  ){
-                    $value = $this->crud->totalQuery->sum($table_name.'.'.$total['name']);
-                }else{
+            foreach ($totals as $key => $total) {
+                if (isset($total['aggregate']) && $total['aggregate'] == 'sum') {
+                    $value = $this->crud->totalQuery->sum($table_name . '.' . $total['name']);
+                } else {
                     $value = $this->crud->totalQuery->count();
                 }
 
-
-
-                if( isset($total['type']) && isset($total['function_name']) && $total['type'] == 'model_function' ){
-                    $function = $total['function_name'];
-                    $value = $this->crud->model->$function($value);
+                if (isset($total['function'])) {
+                    $function = $total['function'];
+                    //$value = $this->crud->model->$function($value);
+                    $value = $total['function']($value);
                     $totals[$key]['value'] = $value;
-                }else{
-                    echo "<pre>";
-                    print_r($totals);
-                    echo "</pre>";
-
+                } else {
+                    $totals[$key]['value'] = $value;
                 }
             }
 
             return response()->json($totals);
-
         }
 
         $this->crud->hasAccessOrFail('list');
