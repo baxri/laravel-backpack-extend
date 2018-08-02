@@ -4,7 +4,7 @@
 </button>
 
 <div class="modal fade" id="openModal{{$entry->getKey() . $button->name }}" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalLabel" aria-hidden="true">
+     aria-labelledby="exampleModalLabel" aria-hidden="true" style="z-index: 9999">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,7 +35,7 @@
         $("#routeButton" + key + button).attr("disabled", "disabled");
 
         var comment = $("#routeButtonComment" + key + button).val();
-        console.log(comment);
+
         $.ajax({
             type: "POST",
             url: url,
