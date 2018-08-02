@@ -28,15 +28,6 @@ class MyCrudPanel extends CrudPanel
         ]);
     }
 
-    public function getRelationModel($relationString, $length = null, $model = null)
-    {
-        $result = array_reduce(explode('.', $relationString), function ($obj, $method) {
-            return $obj->$method()->getRelated();
-        }, $this->model);
-
-        return get_class($result);
-    }
-
     public function addTotal($field)
     {
         $this->totals[] = $field;
