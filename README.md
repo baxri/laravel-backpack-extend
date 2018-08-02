@@ -93,7 +93,7 @@ public function setup(){
 ```
 
 
-## RouteButton
+## ActionButton
 
 Add button to action bar, with route and confirmation modal
 
