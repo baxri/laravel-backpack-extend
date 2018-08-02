@@ -14,7 +14,7 @@ This Package Requires Laravel Backpack
 "repositories" : [
       {
           "type": "vcs",
-          "url":  "http://ngitlab.unipay.com/unipay/custom-crud.git"
+          "url":  "git@ngitlab.unipay.com:unipay/custom-crud.git"
       }
 ]
 ```
