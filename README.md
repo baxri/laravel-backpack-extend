@@ -60,9 +60,7 @@ Add this route in web.php
 ```javascript
 
 Route::group(['prefix' => 'console', 'middleware' => 'admin'], function(){
-
     Route::get('testExport', 'Admin\TestCrudController@export');
-
 }
 
 
