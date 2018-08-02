@@ -23,6 +23,7 @@ class CustomCrudController extends CrudController
 //            $this->crud = app()->make(CrudPanel::class);
             $this->crud = app()->make(MyCrudPanel::class);
 
+
             // call the setup function inside this closure to also have the request there
             // this way, developers can use things stored in session (auth variables, etc)
             $this->middleware(function ($request, $next) {
@@ -33,6 +34,8 @@ class CustomCrudController extends CrudController
                 return $next($request);
             });
         }
+
+        $this->crud->setListView('ccrud::list');
     }
 
 //    public function __construct()

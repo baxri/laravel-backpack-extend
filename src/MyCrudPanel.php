@@ -70,9 +70,24 @@ class MyCrudPanel extends CrudPanel
         $this->addTotal([
             'label' => $label,
             'aggregate' => 'sum',
-            'name' => $field
-//            'type' => 'model_function',
-//            'function_name' => 'getAmountTotalView'
+            'name' => $field,
+        ]);
+    }
+
+    public function addSumMoney($field, $label = null, $currency = 'GEL')
+    {
+        if ($label == null) {
+            $label = ucfirst($field);
+        }
+
+        $this->addTotal([
+            'label' => $label,
+            'aggregate' => 'sum',
+            'name' => $field,
+            'type' => 'model_function',
+            'function' => function($val) use($currency){
+                return number_format($val, 2, '.', '').' '.$currency;
+            }
         ]);
     }
 
