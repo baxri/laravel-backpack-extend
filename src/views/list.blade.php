@@ -123,8 +123,8 @@
     <script>
         $("#crudTable").on('draw.dt', function () {
             var ajax_table = $("#crudTable").DataTable();
-            make_request_to_get_total_info("{{ url($crud->route.'/search').'?'.Request::getQueryString() }}&request_type=total");
-            // make_request_to_get_total_info(ajax_table.ajax.url() + "&request_type=total");
+            {{--make_request_to_get_total_info("{{ url($crud->route.'/search').'?'.Request::getQueryString() }}&request_type=total");--}}
+            make_request_to_get_total_info(ajax_table.ajax.url() + "&request_type=total");
         });
 
 

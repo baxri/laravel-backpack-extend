@@ -13,76 +13,7 @@ trait AjaxTable
     {
         $request_type = isset($_GET['request_type']) ? $_GET['request_type'] : 'list';
 
-
-        if ($request_type == 'excel') {
-
-            die('OK');
-
-//            $response = new StreamedResponse(function(){
-//                // Open output stream
-//                $handle = fopen('php://output', 'w');
-//
-//                \App\Order::chunk(500, function($users) use($handle) {
-//                    foreach ($users as $user) {
-//                        fputcsv($handle, $user->toArray());
-//                    }
-//                });
-//
-//                // Close the output stream
-//                fclose($handle);
-//            }, 200, [
-//                'Content-Type' => 'text/csv',
-//                'Content-Disposition' => 'attachment; filename="export.csv"',
-//            ]);
-//
-//            exit();
-//
-//
-//            $table_name = $this->crud->model->getTable();
-//            $filename = str_replace("_", " ", ucfirst($table_name));
-//            $result = $this->crud->query->get()->toArray();
-//
-//            Excel::create(str_replace("_", " ", ucfirst($table_name)), function ($excel) {
-//                $excel->sheet('Sheet', function ($sheet){
-//
-//                    Order::chunk(1000, function($results) use($sheet) {
-//                        foreach($results as $result){
-//                            $sheet->appendRow($result->toArray());
-//                        }
-//                    });
-//
-//                    // $sheet->with($data);
-//                });
-//            })->store('xlsx',public_path('exports'));
-
-//             $data = array();
-
-//             foreach ($result as $item) {
-//                 $exists = method_exists($item, 'toExport');
-//                 if (!$exists) {
-
-//                     $data[] = $item->toArray();
-
-// //                    return response()->json([
-// //                        'error' => 'Method toExport not exists in Model'
-// //                    ]);
-//                 } else {
-//                     $data[] = $item->toExport();
-//                 }
-//             }
-
-            // Excel::create(str_replace("_", " ", ucfirst($table_name)), function ($excel) use ($data) {
-            //     $excel->sheet('Sheet', function ($sheet) use ($data) {
-            //         $sheet->with($data);
-            //     });
-            // })->store('xlsx',public_path('exports'));
-
-//            return response()->json([
-//                'error' => "",
-//                'download' => url('/exports') . '/' . $filename . '.xlsx',
-//            ]);
-
-        } elseif ($request_type == 'total') {
+        if ($request_type == 'total') {
 
             $totals = $this->crud->getTotals();
             $table_name = $this->crud->model->getTable();
